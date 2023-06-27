@@ -4,38 +4,46 @@ import numpy
 import pandas
 
 #VARIABLES
-size = ["platoon", "company", "mlr"]
-state = ["competition", "crisis", "conflict"]
+unit_size = ["Platoon", "Company", "MLR"]
+unit_state = ["Competition", "Crisis", "Conflict"]
 
-def generator(self):
-    for size in size:
-        for state in state:
-            unit = Unit()
-            Unit.size(unit)
-            Unit.state(unit)
-class Unit:
-    def __init__(self, type, state, inflation, attrition):
+def generator():
+    for size in unit_size:
+        for state in unit_state:
+            unit = UnitFactors(size, state)
+            UnitFactors.size(unit)
+            UnitFactors.state(unit)
+class UnitFactors:
+    def __init__(self, type, state):
         self.type = type
         self.state = state
-        self.inflation = inflation
-        self.attrition = attrition
+        self.inflation_factor = 0
+        self.attrition_size = 0
         
-    def size(self, unit):  
-        if unit.type == "platoon":
+    def size(self):  
+        if self.type == "Platoon":
             self.size = 50
-        if unit.type == "company":
+        if self.type == "Company":
             self.size = 400
-        if unit.type == "mlr":
+        if self.type == "MLR":
             self.size = 2000
+        print("Unit Type: ", self.type)
+        print("Unit Size: ", self.size)
 
     def state(self):
-        if self.state == "crisis":
-            self.inflation = 1.5
-            crisis_attrition_factor = random.uniform(0.01, 0.1)
-            self.platoon_crisis_attrition = (size - size * crisis_attrition_factor)
+        size = self.size
+        if self.state == "Crisis":
+            self.inflation_factor = 1.5
+            attrition_factor = random.uniform(0.01, 0.1)
+            self.attrition_size = (size - size * attrition_factor)
 
-        if self.state == "conflict":
-            self.inflation = 2
-            conflict_attrition_factor = random.uniform(1, 3)
-            self.platoon_crisis_attrition = (size - size * crisis_attrition_factor)
+        if self.state == "Conflict":
+            self.inflation_factor = 2
+            attrition_factor = random.uniform(1, 3)
+            self.attrition_size = (size - size * attrition_factor)
 
+        print("Unit State: ", self.state)
+        print("Inflation Factor: ", self.inflation_factor)
+        print("Attrition Size: ", self.attrition_size)
+
+generator()
