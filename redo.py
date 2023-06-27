@@ -1,4 +1,5 @@
 #THIS IS DEMAND PER DAY
+#GENERAL INFLATION FACTOR IS IF SPECIFIC STATE DATA IS NOT PRESENT
 
 #IMPORTS
 import random
@@ -14,7 +15,7 @@ class UnitFactors:
     def __init__(self, type, state):
         self.type = type
         self.state = state
-        self.inflation_factor = 1
+        self.general_inflation_factor = 1
         self.attrition_size = 0
         
     def size(self):  
@@ -30,31 +31,46 @@ class UnitFactors:
     def state(self):
         size = self.size
         if self.state == "Crisis":
-            self.inflation_factor = 1.5
+            self.general_inflation_factor = 1.5
             attrition_factor = random.uniform(0.01, 0.1)
             self.attrition_size = (size - size * attrition_factor)
 
         if self.state == "Conflict":
-            self.inflation_factor = 2
+            self.general_inflation_fact = 2
             attrition_factor = random.uniform(1, 3)
             self.attrition_size = (size - size * attrition_factor)
 
         print("Unit State: ", self.state)
-        print("Inflation Factor: ", self.inflation_factor)
+        print("Inflation Factor: ", self.general_inflation_fact)
         print("Attrition Size: ", self.attrition_size)
 
     #CLASS ONE: FOOD
     def demand(self):
         #CLASS ONE: FOOD
-        #3 MREs per Marine, 12 MREs in a case
+        """
+        3 MREs per Marine per Day
+        12 MREs in a Case
+        Each Case is 16lbs
+        Lbs divided by 2000 is Short Tons
+        """
         class_one_individual_mean = 3
-        class_one_mean = (class_one_individual_mean * self.size) * self.inflation_factor
+        class_one_mean = (class_one_individual_mean * self.size) * self.general_inflation_fact
         class_one_stdev = 1
-        self.class_one_demand_raw = numpy.random.normal(class_one_mean, class_one_stdev) - self.attrition_size
-        self.class_one_demand = round(self.class_one_demand_raw / 12)
+        self.class_one_demand_mres = numpy.random.normal(class_one_mean, class_one_stdev) - self.attrition_size
+        self.class_one_demand_cases = round(self.class_one_demand_mres / 12)
+        self.class_one_demand_pounds = round((self.class_one_demand_cases * 16), 2)
+        self.class_one_demand = round((self.class_one_demand_pounds / 2000), 2)
 
         #CLASS TWO: EQUIPMENT
         #CLASS THREE: FUEL
+        """
+        The MEU uses 48,145 gallons daily in a sustained situation.
+        63,842 in an assault situation.
+        Project this into what we estimate the MLR would utilize...
+        Competition: Same sustained, 48,145
+        Crisis: Middle ground, 55,992
+        Conflict: Same assault, 63,842
+        """
         #CLASS FIVE: AMMO
         #CLASS SIX: PERSONAL ITEMS
         #CLASS SEVEN: MAJOR END ITEMS
@@ -71,14 +87,20 @@ class Data:
         "Unit State": [],
         "Inflation Factor": [],
         "Attrition Size": [],
-        "Class One Demand (Cases)": [],
-        "Class Two Demand": [],
-        "Class Three Demand": [],
-        "Class Five Demand": [],
-        "Class Six Demand": [],
-        "Class Seven Demand": [],
-        "Class Nine Demand": [],
-        "Class Ten Demand": []
+        "Class One Demand (tn)": []
+    })
+
+    class_one_data = pandas.DataFrame({
+        "Unit Type": [],
+        "Unit Size": [],
+        "Unit State": [],
+        "Inflation Factor": [],
+        "Attrition Size": [],
+        "MREs": [],
+        "Cases": [],
+        "Pounds": [],
+        "Short Tones": []
+
     })
 
     def add_data(unit):
@@ -86,17 +108,22 @@ class Data:
             "Unit Type": unit.type,
             "Unit Size": unit.size,
             "Unit State": unit.state,
-            "Inflation Factor": unit.inflation_factor,
+            "Inflation Factor": unit.general_inflation_factor,
             "Attrition Size": unit.attrition_size,
-            "Class One Demand": unit.class_one_demand,
-            "Class Two Demand": unit.class_two_demand,
-            "Class Three Demand": unit.class_three_demand,
-            "Class Five Demand": unit.class_five_demand,
-            "Class Six Demand": unit.class_six_demand,
-            "Class Seven Demand": unit.class_seven_demand,
-            "Class Nine Demand": unit.class_nine_demand,
-            "Class Ten Demand": unit.class_ten_demand
+            "Class One Demand (tn)": unit.class_one_demand
         }, ignore_index=True)
+
+        Data.class_one_data = Data.class_one_data.append({
+            "Unit Type": unit.type,
+            "Unit Size": unit.size,
+            "Unit State": unit.state,
+            "Inflation Factor": unit.general_inflation_factor,
+            "Attrition Size": unit.attrition_size,
+            "MREs": unit.class_one_demand_mres,
+            "Cases": unit.class_one_demand_cases,
+            "Pounds": unit.class_one_demand_pounds,
+            "Short Tones": unit.class_one_demand
+        })
 
 #ITERATE THE DATA
 def generator():
