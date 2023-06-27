@@ -46,18 +46,20 @@ class UnitFactors:
     #CLASS ONE: FOOD
     def demand(self):
         #CLASS ONE: FOOD
-        #3 MREs per Marine
+        #3 MREs per Marine, 12 MREs in a case
         class_one_individual_mean = 3
         class_one_mean = (class_one_individual_mean * self.size) * self.inflation_factor
         class_one_stdev = 1
-        self.class_one_demand = numpy.random.normal(class_one_mean, class_one_stdev) - self.attrition_size
+        self.class_one_demand_raw = numpy.random.normal(class_one_mean, class_one_stdev) - self.attrition_size
+        self.class_one_demand = round(self.class_one_demand_raw / 12)
 
         #CLASS TWO: EQUIPMENT
-        # SOURCE
-        class_two_individual_mean = 3
-        class_two_mean = (class_two_individual_mean * self.size) * self.inflation_factor
-        class_two_stdev = 1
-        self.class_two_demand = numpy.random.normal(class_two_mean, class_two_stdev) - self.attrition_size
+        #CLASS THREE: FUEL
+        #CLASS FIVE: AMMO
+        #CLASS SIX: PERSONAL ITEMS
+        #CLASS SEVEN: MAJOR END ITEMS
+        #CLASS NINE: REPAIR PARTS
+        #CLASS TEN: NON-MILITARY ITEMS
 
 
 #DATA STORAGE
@@ -69,7 +71,7 @@ class Data:
         "Unit State": [],
         "Inflation Factor": [],
         "Attrition Size": [],
-        "Class One Demand": [],
+        "Class One Demand (Cases)": [],
         "Class Two Demand": [],
         "Class Three Demand": [],
         "Class Five Demand": [],
