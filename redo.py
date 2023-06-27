@@ -74,10 +74,13 @@ class UnitFactors:
         The MEU uses 48,145 gallons daily in a sustained situation.
         """
         class_three_individual_mean = 48145
-        class_three_mean = (class_three_individual_mean) * self.inflation_factor
+        class_three_mean = class_three_individual_mean * self.inflation_factor
         class_three_stdev = 1
         self.class_three_raw = numpy.random.normal(class_three_mean, class_three_stdev)
         self.class_three_demand = round(self.class_three_raw, 2)
+        print(class_three_individual_mean)
+        print(class_three_mean)
+        print(self.class_three_demand)
 
         #CLASS FIVE: AMMO
         #CLASS SIX: PERSONAL ITEMS
@@ -117,7 +120,6 @@ class Data:
         "Unit Size": [],
         "Unit State": [],
         "Inflation Factor": [],
-        "Attrition Size": [],
         "Gallons": []
     })
 
@@ -150,8 +152,7 @@ class Data:
             "Unit Size": unit.size,
             "Unit State": unit.state,
             "Inflation Factor": unit.inflation_factor,
-            "Attrition Size": unit.attrition_size,
-            "Gallons": unit.class_one_demand,
+            "Gallons": unit.class_three_demand,
         }, ignore_index=True)
 
 #ITERATE THE DATA
