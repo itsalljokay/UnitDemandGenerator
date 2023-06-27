@@ -38,11 +38,6 @@ mlr_size = 2000
 crisis_attrition_factor = random.uniform(0.01, 0.1)
 conflict_attrition_factor = random.uniform(1, 3)
 
-for unit in units:
-    for state in states:
-        unit + state + "_attrition" = unit_size
-
-
 platoon_crisis_attrition = platoon_size - (platoon_size * crisis_attrition_factor)
 company_crisis_attrition = company_size - (company_size * crisis_attrition_factor)
 mlr_crisis_attrition = mlr_size - (company_size * crisis_attrition_factor)
