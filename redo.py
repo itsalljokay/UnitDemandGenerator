@@ -6,13 +6,8 @@ import pandas
 #VARIABLES
 unit_size = ["Platoon", "Company", "MLR"]
 unit_state = ["Competition", "Crisis", "Conflict"]
-
-def generator():
-    for size in unit_size:
-        for state in unit_state:
-            unit = UnitFactors(size, state)
-            UnitFactors.size(unit)
-            UnitFactors.state(unit)
+ 
+#DEFINE DATA
 class UnitFactors:
     def __init__(self, type, state):
         self.type = type
@@ -46,4 +41,34 @@ class UnitFactors:
         print("Inflation Factor: ", self.inflation_factor)
         print("Attrition Size: ", self.attrition_size)
 
+#DATA STORAGE
+class Data:
+    all_data = pandas.DataFrame({
+        "Unit Type": [],
+        "Unit Size": [],
+        "Unit State": [],
+        "Inflation Factor": [],
+        "Attrition Size": []
+    })
+
+    def add_data(unit):
+        Data.all_data = Data.all_data.append({
+            "Unit Type": unit.type,
+            "Unit Size": unit.size,
+            "Unit State": unit.state,
+            "Inflation Factor": unit.inflation_factor,
+            "Attrition Size": unit.attrition_size
+        }, ignore_index=True)
+
+#ITERATE THE DATA
+def generator():
+    for size in unit_size:
+        for state in unit_state:
+            unit = UnitFactors(size, state)
+            UnitFactors.size(unit)
+            UnitFactors.state(unit)
+            Data.add_data(unit)
+
+#RUN
 generator()
+print(Data.all_data)
