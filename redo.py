@@ -72,9 +72,10 @@ class UnitFactors:
         #CLASS THREE: FUEL
         """
         The MEU uses 48,145 gallons daily in a sustained situation.
+        The MEU has approximately 2000 Marines, so needing a common unit, find gallons per Marine (48,145 divided by 2000)
         """
-        class_three_individual_mean = 48145
-        class_three_mean = class_three_individual_mean * self.inflation_factor
+        class_three_individual_mean = (48145 / 2000)
+        class_three_mean = (class_three_individual_mean * self.size) * self.inflation_factor
         class_three_stdev = 1
         self.class_three_raw = numpy.random.normal(class_three_mean, class_three_stdev)
         self.class_three_demand = round(self.class_three_raw, 2)
