@@ -1,5 +1,6 @@
-#THIS IS DEMAND PER DAY
-#GENERAL INFLATION FACTOR IS IF SPECIFIC STATE DATA IS NOT PRESENT
+#Demand Details Found in MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+#4030 Logistics Planning Factors Marine Expeditionary Force Supply Requirements
+#IV-57
 
 #IMPORTS
 import math
@@ -38,14 +39,16 @@ class UnitFactors:
             self.inflation_factor = 1.5
             #Attrition Factors
             attrition_factor = random.uniform(0.01, 0.1)
-            self.attrition_size = (size - size * attrition_factor)
+            attrition_size_raw = (size * attrition_factor)
+            self.attrition_size = math.ceil(attrition_size_raw)
 
         if self.state == "Conflict":
             #Inflation Factors
             self.general_inflation_factor = 2
             #Attrition Factors
-            attrition_factor = random.uniform(1, 3)
-            self.attrition_size = (size - size * attrition_factor)
+            attrition_factor = random.uniform(0.1, 0.4)
+            attrition_size_raw = (size * attrition_factor)
+            self.attrition_size = math.ceil(attrition_size_raw)
 
         print("Unit State: ", self.state)
         print("Inflation Factor: ", self.inflation_factor)
