@@ -73,6 +73,18 @@ class UnitFactors:
         class_one_demand_raw = abs(numpy.random.normal(class_one_mean, class_one_stdev))
         self.class_one_demand = round(class_one_demand_raw, 2)
 
+        #WATER
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        260300 gallons daily for MEF sized element.
+        """
+        water_data = 196
+        water_individual_mean = water_data / mef_size
+        water_mean = (water_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        water_stdev = 1
+        water_demand_raw = abs(numpy.random.normal(water_mean, water_stdev))
+        self.water_demand = round(water_demand_raw, 2)
+        
         #CLASS TWO: EQUIPMENT
         """
         MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
@@ -87,14 +99,63 @@ class UnitFactors:
         
         #CLASS THREE: FUEL
         """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        950,010 gallons daily for MEF sized element.
         """
+        class_three_data = 950010
+        class_three_individual_mean = class_three_data / mef_size
+        class_three_mean = (class_three_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_three_stdev = 1
+        class_three_demand_raw = abs(numpy.random.normal(class_three_mean, class_three_stdev))
+        self.class_three_demand = round(class_three_demand_raw, 2)
         
-
+        #CLASS FOUR: CONSTRUCTION AND BARRIER MATERIAL
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        139 stons daily for MEF sized element.
+        """
+        class_four_data = 139
+        class_four_individual_mean = class_four_data / mef_size
+        class_four_mean = (class_four_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_four_stdev = 1
+        class_four_demand_raw = abs(numpy.random.normal(class_four_mean, class_four_stdev))
+        self.class_four_demand = round(class_four_demand_raw, 2)
+        
         #CLASS FIVE: AMMO
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        1600 stons daily for MEF sized element.
+        """
+        class_five_data = 1600
+        class_five_individual_mean = class_five_data / mef_size
+        class_five_mean = (class_five_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_five_stdev = 1
+        class_five_demand_raw = abs(numpy.random.normal(class_five_mean, class_five_stdev))
+        self.class_five_demand = round(class_five_demand_raw, 2)
+
         #CLASS SIX: PERSONAL ITEMS
-        #CLASS SEVEN: MAJOR END ITEMS
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        1600 stons daily for MEF sized element.
+        """
+        class_six_data = 26
+        class_six_individual_mean = class_six_data / mef_size
+        class_six_mean = (class_six_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_six_stdev = 1
+        class_six_demand_raw = abs(numpy.random.normal(class_six_mean, class_six_stdev))
+        self.class_six_demand = round(class_six_demand_raw, 2)
+
         #CLASS NINE: REPAIR PARTS
-        #CLASS TEN: NON-MILITARY ITEMS
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        41 stons daily for MEF sized element.
+        """
+        class_nine_data = 26
+        class_nine_individual_mean = class_nine_data / mef_size
+        class_nine_mean = (class_nine_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_nine_stdev = 1
+        class_nine_demand_raw = abs(numpy.random.normal(class_nine_mean, class_nine_stdev))
+        self.class_nine_demand = round(class_nine_demand_raw, 2)
 
 
 #DATA STORAGE
@@ -106,8 +167,14 @@ class Data:
         "Unit State": [],
         "Inflation Factor": [],
         "Attrition Size": [],
-        "Class One Demand (tn)": [],
-        "Class Two Demand (tn)": []
+        "Class One Demand (stons)": [],
+        "Water Demand (gal)": [],
+        "Class Two Demand (stons)": [],
+        "Class Three Demand (gal)": [],
+        "Class Four Demand (stons)": [],
+        "Class Five Demand (stons)": [],
+        "Class Six Demand (stons)": [],
+        "Class Nine Demand (stons)": []
     })
     """
     WILL BREAK INTO CLASS DATAFRAMES LATER
@@ -137,8 +204,14 @@ class Data:
             "Unit State": unit.state,
             "Inflation Factor": unit.inflation_factor,
             "Attrition Size": unit.attrition_size,
-            "Class One Demand (tn)": unit.class_one_demand,
-            "Class Two Demand (tn)": unit.class_two_demand
+            "Class One Demand (stons)": unit.class_one_demand,
+            "Water Demand (gal)": unit.water_demand,
+            "Class Two Demand (stons)": unit.class_two_demand,
+            "Class Three Demand (gal)": unit.class_three_demand,
+            "Class Four Demand (stons)": unit.class_four_demand,
+            "Class Five Demand (stons)": unit.class_five_demand,
+            "Class Six Demand (stons)": unit.class_six_demand,
+            "Class Nine Demand (stons)": unit.class_nine_demand
         }, ignore_index=True)
 
 #ITERATE THE DATA
