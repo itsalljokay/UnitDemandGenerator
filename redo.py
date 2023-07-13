@@ -2,6 +2,8 @@
 #4030 Logistics Planning Factors Marine Expeditionary Force Supply Requirements
 #IV-57
 
+#ALL DEMAND IS DAILY
+
 #IMPORTS
 import math
 import random
@@ -9,8 +11,9 @@ import numpy
 import pandas
 
 #VARIABLES
-unit_size = ["Platoon", "Company", "MLR", "MEF"]
+unit_size = ["Platoon", "Company", "MLR"]
 unit_state = ["Competition", "Crisis", "Conflict"]
+mef_size = 5300
  
 #DEFINE DATA
 class UnitFactors:
@@ -27,8 +30,6 @@ class UnitFactors:
             self.size = 400
         if self.type == "MLR":
             self.size = 2000
-        if self.type == "MEF":
-            self.size = 5300
         print("Unit Type: ", self.type)
         print("Unit Size: ", self.size)
 
@@ -44,7 +45,7 @@ class UnitFactors:
 
         if self.state == "Conflict":
             #Inflation Factors
-            self.general_inflation_factor = 2
+            self.inflation_factor = 2
             #Attrition Factors
             attrition_factor = random.uniform(0.1, 0.4)
             attrition_size_raw = (size * attrition_factor)
@@ -58,35 +59,28 @@ class UnitFactors:
     def demand(self):
         #CLASS ONE: FOOD
         """
-        3 MREs per Marine per Day
-        12 MREs in a Case
-        Each Case is 16lbs
-        Lbs divided by 2000 is Short Tons
-        Keep in mind, we want full MREs. If given a decimal number of MREs, automatically round up with ceil.
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        196 stons daily for MEF sized element.
         """
-        class_one_individual_mean = 3
-        class_one_mean = (class_one_individual_mean * self.size) * self.inflation_factor
+        class_one_data = 196
+        class_one_individual_mean = class_one_data / mef_size
+        class_one_mean = (class_one_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
         class_one_stdev = 1
-        self.class_one_demand_raw = numpy.random.normal(class_one_mean, class_one_stdev) - self.attrition_size
-        self.class_one_demand_mres = math.ceil(self.class_one_demand_raw)
-        self.class_one_demand_cases = math.ceil(self.class_one_demand_mres / 12)
-        self.class_one_demand_pounds = round((self.class_one_demand_cases * 16), 2)
-        self.class_one_demand = round((self.class_one_demand_pounds / 2000), 2)
+        self.class_one_demand_raw = numpy.random.normal(class_one_mean, class_one_stdev)
+        self.class_one_demand = round(self.class_one_demand_raw, 2)
 
         #CLASS TWO: EQUIPMENT
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        83 stons daily for MEF sized element.
+        """
+        class_two_data = 83
+        class_two_individual_mean = class_two_data / mef_size
+        
         #CLASS THREE: FUEL
         """
-        The MEU uses 48,145 gallons daily in a sustained situation.
-        The MEU has approximately 2000 Marines, so needing a common unit, find gallons per Marine (48,145 divided by 2000)
         """
-        class_three_individual_mean = (48145 / 2000)
-        class_three_mean = (class_three_individual_mean * self.size) * self.inflation_factor
-        class_three_stdev = 1
-        self.class_three_raw = numpy.random.normal(class_three_mean, class_three_stdev)
-        self.class_three_demand = round(self.class_three_raw, 2)
-        print(class_three_individual_mean)
-        print(class_three_mean)
-        print(self.class_three_demand)
+        
 
         #CLASS FIVE: AMMO
         #CLASS SIX: PERSONAL ITEMS
@@ -114,10 +108,6 @@ class Data:
         "Unit State": [],
         "Inflation Factor": [],
         "Attrition Size": [],
-        "Math MREs": [],
-        "Actual MREs": [],
-        "Cases": [],
-        "Pounds": [],
         "Short Tones": []
     })
 
@@ -146,10 +136,6 @@ class Data:
             "Unit State": unit.state,
             "Inflation Factor": unit.inflation_factor,
             "Attrition Size": unit.attrition_size,
-            "Math MREs": unit.class_one_demand_raw,
-            "Actual MREs": unit.class_one_demand_mres,
-            "Cases": unit.class_one_demand_cases,
-            "Pounds": unit.class_one_demand_pounds,
             "Short Tones": unit.class_one_demand
         }, ignore_index=True)
 
