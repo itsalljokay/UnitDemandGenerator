@@ -7,10 +7,23 @@
 #This is equivalent to taking the absoulte value of a normal distribution, which is what we do in the code.
 
 #IMPORTS
+import os
 import math
 import random
 import numpy
 import pandas
+
+#FILE STRUCTURE
+#Get Current Working Directory
+current_location = os.getcwd()
+#All The Folders/Directories We Want To Put Outputs
+directories = [
+    "outputs"
+]
+#If That Folder/Directory Doesn't Already Exist, Make It
+for directory in directories:
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
 #VARIABLES
 unit_size = ["Platoon", "Company", "MLR", "MEF"]
@@ -176,26 +189,6 @@ class Data:
         "Class Six Demand (stons)": [],
         "Class Nine Demand (stons)": []
     })
-    """
-    WILL BREAK INTO CLASS DATAFRAMES LATER
-    class_one_data = pandas.DataFrame({
-        "Unit Type": [],
-        "Unit Size": [],
-        "Unit State": [],
-        "Inflation Factor": [],
-        "Attrition Size": [],
-        "Short Tones": []
-    })
-
-    class_two_data = pandas.DataFrame({
-        "Unit Type": [],
-        "Unit Size": [],
-        "Unit State": [],
-        "Inflation Factor": [],
-        "Attrition Size": [],
-        "Short Tones": []
-    })
-    """
 
     def add_data(unit):
         Data.all_data = Data.all_data.append({
@@ -214,6 +207,12 @@ class Data:
             "Class Nine Demand (stons)": unit.class_nine_demand
         }, ignore_index=True)
 
+class Outputs:
+    class_one_data = Data.all_data
+    def by_class():
+        class_one_dataframe = Outputs.class_one_data.groupby("Class One Demand (stons)")
+        class_one_dataframe.to_csv("outputs/class_one.csv")
+
 #ITERATE THE DATA
 def generator():
     for size in unit_size:
@@ -226,5 +225,6 @@ def generator():
 
 #RUN
 generator()
+Outputs.by_class()
 print("ALL DATA")
 print(Data.all_data)
