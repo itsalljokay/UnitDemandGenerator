@@ -8,7 +8,7 @@ import numpy
 import pandas
 
 #VARIABLES
-unit_size = ["Platoon", "Company", "MLR"]
+unit_size = ["Platoon", "Company", "MLR", "MEF"]
 unit_state = ["Competition", "Crisis", "Conflict"]
  
 #DEFINE DATA
@@ -26,6 +26,8 @@ class UnitFactors:
             self.size = 400
         if self.type == "MLR":
             self.size = 2000
+        if self.type == "MEF":
+            self.size = 5300
         print("Unit Type: ", self.type)
         print("Unit Size: ", self.size)
 
