@@ -66,8 +66,8 @@ class UnitFactors:
         class_one_individual_mean = class_one_data / mef_size
         class_one_mean = (class_one_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
         class_one_stdev = 1
-        self.class_one_demand_raw = numpy.random.normal(class_one_mean, class_one_stdev)
-        self.class_one_demand = round(self.class_one_demand_raw, 2)
+        class_one_demand_raw = numpy.random.normal(class_one_mean, class_one_stdev)
+        self.class_one_demand = round(class_one_demand_raw, 2)
 
         #CLASS TWO: EQUIPMENT
         """
@@ -76,6 +76,10 @@ class UnitFactors:
         """
         class_two_data = 83
         class_two_individual_mean = class_two_data / mef_size
+        class_two_mean = (class_two_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_two_stdev = 1
+        class_two_demand_raw = numpy.random.normal(class_two_mean, class_two_stdev)
+        self.class_two_demand = round(class_two_demand_raw, 2)
         
         #CLASS THREE: FUEL
         """
@@ -99,9 +103,10 @@ class Data:
         "Inflation Factor": [],
         "Attrition Size": [],
         "Class One Demand (tn)": [],
-        "Class Three Demand (gal)": []
+        "Class Two Demand (tn)": []
     })
-
+    """
+    WILL BREAK INTO CLASS DATAFRAMES LATER
     class_one_data = pandas.DataFrame({
         "Unit Type": [],
         "Unit Size": [],
@@ -111,13 +116,15 @@ class Data:
         "Short Tones": []
     })
 
-    class_three_data = pandas.DataFrame({
+    class_two_data = pandas.DataFrame({
         "Unit Type": [],
         "Unit Size": [],
         "Unit State": [],
         "Inflation Factor": [],
-        "Gallons": []
+        "Attrition Size": [],
+        "Short Tones": []
     })
+    """
 
     def add_data(unit):
         Data.all_data = Data.all_data.append({
@@ -127,24 +134,7 @@ class Data:
             "Inflation Factor": unit.inflation_factor,
             "Attrition Size": unit.attrition_size,
             "Class One Demand (tn)": unit.class_one_demand,
-            "Class Three Demand (gal)": unit.class_three_demand
-        }, ignore_index=True)
-
-        Data.class_one_data = Data.class_one_data.append({
-            "Unit Type": unit.type,
-            "Unit Size": unit.size,
-            "Unit State": unit.state,
-            "Inflation Factor": unit.inflation_factor,
-            "Attrition Size": unit.attrition_size,
-            "Short Tones": unit.class_one_demand
-        }, ignore_index=True)
-
-        Data.class_three_data = Data.class_three_data.append({
-            "Unit Type": unit.type,
-            "Unit Size": unit.size,
-            "Unit State": unit.state,
-            "Inflation Factor": unit.inflation_factor,
-            "Gallons": unit.class_three_demand,
+            "Class Two Demand (tn)": unit.class_two_demand
         }, ignore_index=True)
 
 #ITERATE THE DATA
@@ -161,7 +151,3 @@ def generator():
 generator()
 print("ALL DATA")
 print(Data.all_data)
-print("CLASS ONE")
-print(Data.class_one_data)
-print("CLASS THREE")
-print(Data.class_three_data)
