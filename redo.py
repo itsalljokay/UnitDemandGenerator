@@ -3,6 +3,8 @@
 #IV-57
 
 #ALL DEMAND IS DAILY
+#Using a folded normal distribution as we are sampling from what is basically the absolute value of a normal distribution.
+#This is equivalent to taking the absoulte value of a normal distribution, which is what we do in the code.
 
 #IMPORTS
 import math
@@ -68,7 +70,7 @@ class UnitFactors:
         class_one_individual_mean = class_one_data / mef_size
         class_one_mean = (class_one_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
         class_one_stdev = 1
-        class_one_demand_raw = numpy.random.normal(class_one_mean, class_one_stdev)
+        class_one_demand_raw = abs(numpy.random.normal(class_one_mean, class_one_stdev))
         self.class_one_demand = round(class_one_demand_raw, 2)
 
         #CLASS TWO: EQUIPMENT
@@ -80,7 +82,7 @@ class UnitFactors:
         class_two_individual_mean = class_two_data / mef_size
         class_two_mean = (class_two_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
         class_two_stdev = 1
-        class_two_demand_raw = numpy.random.normal(class_two_mean, class_two_stdev)
+        class_two_demand_raw = abs(numpy.random.normal(class_two_mean, class_two_stdev))
         self.class_two_demand = round(class_two_demand_raw, 2)
         
         #CLASS THREE: FUEL
