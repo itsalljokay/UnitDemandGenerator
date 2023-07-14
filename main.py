@@ -6,155 +6,415 @@ PROBLEM: Realistic demand generation is neccessary for increasing realism for lo
 PURPOSE: Provide realistic demand generation for each class of supply depending on unit size and state.
 OBJECTIVE: Provide quantitative demand data output for logistics-based wargames.
 
-LAST UPDATED: xx JUL 23
+LAST UPDATED: 14 JUL 23
 
-#NOTE
-This one will be all classes of supply outputted for each state of existance.
+NOTES:
+o Demand values are found in MSTP Pamplet 5-0.3 MAFTF Planner's Reference Manual which is unclassified, and marked for
+public release with unlimited distribution. Specifically, section 4030 Logistics Planning Factors Marine Expeditionary
+Force Supply Requirements was referenced.
 
-INTERNAL PROBLEM: I dislike having so many variables defined, but I can't think of a slicker option...
-SOLUTION: Attempting for the first time some tuple unpacking. 
-
-FUTURE USEAGE THOUGHTS: If adding to a larger program, probably refactor to seperate program into multiple
-files. This way all variables can be in their own variables.py file. Potentially refactor this in the end to
-do this. Add one option for all classes per state, and then one class with all states.
+o All demand calculated is daily.
 """
+
 #IMPORTS
+"""
+Purpose: Import all external packages and libraries we need for this project.
+o   OS is to interact with the operating system. We will use it to create folder structure to store our outputs.
+    https://docs.python.org/3/library/os.html
+o   Math is a module for mathematical operations.
+    https://docs.python.org/3/library/math.html 
+o   Random is a module for random number generation.
+    https://docs.python.org/3/library/random.html 
+o   Numpy is a scientific computing package for math.
+    https://numpy.org/
+o   Pandas is a data analysis library.
+    https://pandas.pydata.org/
+"""
+import os
+import math
 import random
 import numpy
 import pandas
 
+#FILE STRUCTURE
+"""
+Purpose: Create the folder structure where we will store our outputs.
+"""
+#Get Current Working Directory
+current_location = os.getcwd()
+#All The Folders/Directories We Want To Put Outputs
+directories = [
+    "outputs",
+    "outputs/class",
+    "outputs/unit",
+    "outputs/state"
+]
+#If That Folder/Directory Doesn't Already Exist, Make It
+for directory in directories:
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
 #VARIABLES
-units = [platoon, company, mlr]
-states = [competition, crisis, conflict]
+"""
+Purpose: All the variables and parameters that are needed throughout the program (globally).
+"""
+unit_size = ["Platoon", "Company", "MLR", "MEF"]
+unit_state = ["Competition", "Crisis", "Conflict"]
+mef_size = 5300
+ 
+#DEFINE DATA
+"""
+Purpose: Create a unit complete with characteristics that would impact demand request, and their corresponding demand per
+each class of supply.
+"""
+class UnitFactors:
+    #Every unit has a type (platoon, company, MLR, etc), state (competition, crisis, etc), and inflation factor, and an attrition size.
+    def __init__(self, type, state):
+        self.type = type
+        self.state = state
+        self.inflation_factor = 1
+        self.attrition_size = 0
 
-#Base Unit Sizes
-platoon_size = 50
-company_size = 400
-mlr_size = 2000
+    #Set the size of the unit based on unit type.    
+    def size(self):  
+        if self.type == "Platoon":
+            self.size = 50
+        if self.type == "Company":
+            self.size = 400
+        if self.type == "MLR":
+            self.size = 2000
+        if self.type == "MEF":
+            self.size = mef_size
+        print("Unit Type: ", self.type)
+        print("Unit Size: ", self.size)
 
-#Attrition Rate For Crisis and Conflict
-#Crisis attrition rate is randomly selected anywhere from 0.01% and 0.1%.
-#Conflict attrition rate is randomly selected anywhere from 1% to 3%.
-crisis_attrition_factor = random.uniform(0.01, 0.1)
-conflict_attrition_factor = random.uniform(1, 3)
+    #Set inflation factor and attrition size based on state of conflict.
+    def state(self):
+        size = self.size
+        if self.state == "Crisis":
+            #Inflation Factors
+            self.inflation_factor = 1.5
+            #Attrition Factors
+            attrition_factor = random.uniform(0.01, 0.1)
+            attrition_size_raw = (size * attrition_factor)
+            self.attrition_size = math.ceil(attrition_size_raw)
 
-platoon_crisis_attrition = platoon_size - (platoon_size * crisis_attrition_factor)
-company_crisis_attrition = company_size - (company_size * crisis_attrition_factor)
-mlr_crisis_attrition = mlr_size - (company_size * crisis_attrition_factor)
+        if self.state == "Conflict":
+            #Inflation Factors
+            self.inflation_factor = 2
+            #Attrition Factors
+            attrition_factor = random.uniform(0.1, 0.4)
+            attrition_size_raw = (size * attrition_factor)
+            self.attrition_size = math.ceil(attrition_size_raw)
 
-platoon_conflict_attrition = platoon_size - (platoon_size * conflict_attrition_factor)
-company_conflict_attrition = company_size - (company_size * conflict_attrition_factor)
-mlr_conflict_attrition = mlr_size - (mlr_size * conflict_attrition_factor)
+        print("Unit State: ", self.state)
+        print("Inflation Factor: ", self.inflation_factor)
+        print("Attrition Size: ", self.attrition_size)
 
-"""
-Class 1: Food
-"""
-class ClassOneVariables:
-    #Usual Request Based on MAGTF Planning
-    #3 MREs per Marine per Day
-    individual_mean = 3
-    for unit 
-    platoon_mean = platoon_size * individual_mean
-    company_mean = company_size * individual_mean
-    mlr_mean = mlr_size * individual_mean
-    
-    #Demand Inflation Factor Depending on Continuum State
-    competition_inflation_factor = 1
-    crisis_inflation_factor = 1.5
-    conflict_inflation_factor = 2
+    #CLASS ONE: FOOD
+    def demand(self):
+        #CLASS ONE: FOOD
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        196 stons daily for MEF sized element.
+        """
+        class_one_data = 196
+        class_one_individual_mean = class_one_data / mef_size
+        class_one_mean = (class_one_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_one_stdev = 1
+        class_one_demand_raw = abs(numpy.random.normal(class_one_mean, class_one_stdev))
+        self.class_one_demand = round(class_one_demand_raw, 2)
 
-    #Competition Mean Calculations
-    competition_demand_mean_platoon = competition_inflation_factor * platoon_mean
-    competition_demand_mean_company = competition_inflation_factor * company_mean
-    competition_demand_mean_mlr = competition_inflation_factor * mlr_mean
+        #WATER
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        260300 gallons daily for MEF sized element.
+        """
+        water_data = 196
+        water_individual_mean = water_data / mef_size
+        water_mean = (water_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        water_stdev = 1
+        water_demand_raw = abs(numpy.random.normal(water_mean, water_stdev))
+        self.water_demand = round(water_demand_raw, 2)
+        
+        #CLASS TWO: EQUIPMENT
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        83 stons daily for MEF sized element.
+        """
+        class_two_data = 83
+        class_two_individual_mean = class_two_data / mef_size
+        class_two_mean = (class_two_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_two_stdev = 1
+        class_two_demand_raw = abs(numpy.random.normal(class_two_mean, class_two_stdev))
+        self.class_two_demand = round(class_two_demand_raw, 2)
+        
+        #CLASS THREE: FUEL
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        950,010 gallons daily for MEF sized element.
+        """
+        class_three_data = 950010
+        class_three_individual_mean = class_three_data / mef_size
+        class_three_mean = (class_three_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_three_stdev = 1
+        class_three_demand_raw = abs(numpy.random.normal(class_three_mean, class_three_stdev))
+        self.class_three_demand = round(class_three_demand_raw, 2)
+        
+        #CLASS FOUR: CONSTRUCTION AND BARRIER MATERIAL
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        139 stons daily for MEF sized element.
+        """
+        class_four_data = 139
+        class_four_individual_mean = class_four_data / mef_size
+        class_four_mean = (class_four_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_four_stdev = 1
+        class_four_demand_raw = abs(numpy.random.normal(class_four_mean, class_four_stdev))
+        self.class_four_demand = round(class_four_demand_raw, 2)
+        
+        #CLASS FIVE: AMMO
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        1600 stons daily for MEF sized element.
+        """
+        class_five_data = 1600
+        class_five_individual_mean = class_five_data / mef_size
+        class_five_mean = (class_five_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_five_stdev = 1
+        class_five_demand_raw = abs(numpy.random.normal(class_five_mean, class_five_stdev))
+        self.class_five_demand = round(class_five_demand_raw, 2)
 
-    #Crisis Mean Calculations
-    crisis_demand_mean_platoon = crisis_inflation_factor * platoon_mean
-    crisis_demand_mean_company = crisis_inflation_factor * company_mean
-    crisis_demand_mean_mlr = crisis_inflation_factor * mlr_mean
+        #CLASS SIX: PERSONAL ITEMS
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        1600 stons daily for MEF sized element.
+        """
+        class_six_data = 26
+        class_six_individual_mean = class_six_data / mef_size
+        class_six_mean = (class_six_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_six_stdev = 1
+        class_six_demand_raw = abs(numpy.random.normal(class_six_mean, class_six_stdev))
+        self.class_six_demand = round(class_six_demand_raw, 2)
 
-    #Conflict Mean Calculations
-    conflict_demand_mean_platoon = conflict_inflation_factor * platoon_mean
-    conflict_demand_mean_company = conflict_inflation_factor * company_mean
-    conflict_demand_mean_mlr = conflict_inflation_factor * mlr_mean
-    
-    #Standard Deviations
-    competition_demand_stdev, crisis_demand_stdev, conflict_demand_stdev = 1, 1, 1
+        #CLASS NINE: REPAIR PARTS
+        """
+        MSTP Pamphlet 5-0.3 MAGTF Planner's Reference Manual
+        41 stons daily for MEF sized element.
+        """
+        class_nine_data = 26
+        class_nine_individual_mean = class_nine_data / mef_size
+        class_nine_mean = (class_nine_individual_mean * (self.size - self.attrition_size)) * self.inflation_factor
+        class_nine_stdev = 1
+        class_nine_demand_raw = abs(numpy.random.normal(class_nine_mean, class_nine_stdev))
+        self.class_nine_demand = round(class_nine_demand_raw, 2)
 
-"""
-Class 2: Equipment
-"""
-"""
-Class 3: Fuel
-"""
-"""
-Class 5: Ammo
-"""
-"""
-Class 6: Personal Items 
-"""
-"""
-Class 7: Major End Items
-"""
-"""
-Class 9: Repair Parts
-"""
-"""
-Class 10: Non-Military Items
-"""
 
-#DATAFRAMES
-class Track:
-    competition_platoon_dataframe = pandas.DataFrame({
-        "Class One": [],
-        "Class Two": [],
-        "Class Three": [],
-        "Class Five": [],
-        "Class Six": [],
-        "Class Seven": [],
-        "Class Nine": [],
-        "Class Ten": []
-
+#DATA STORAGE
+"""
+Purpose: Store and add data as demand is generated.
+"""
+class Data:
+    #Contains all of the base data. The demand here is amount needed for one day.
+    all_data = pandas.DataFrame({
+        "Unit Type": [],
+        "Unit Size": [],
+        "Unit State": [],
+        "Inflation Factor": [],
+        "Attrition Size": [],
+        "Class One Demand (stons)": [],
+        "Water Demand (gal)": [],
+        "Class Two Demand (stons)": [],
+        "Class Three Demand (gal)": [],
+        "Class Four Demand (stons)": [],
+        "Class Five Demand (stons)": [],
+        "Class Six Demand (stons)": [],
+        "Class Nine Demand (stons)": []
     })
 
+    def add_data(unit):
+        Data.all_data = Data.all_data.append({
+            "Unit Type": unit.type,
+            "Unit Size": unit.size,
+            "Unit State": unit.state,
+            "Inflation Factor": unit.inflation_factor,
+            "Attrition Size": unit.attrition_size,
+            "Class One Demand (stons)": unit.class_one_demand,
+            "Water Demand (gal)": unit.water_demand,
+            "Class Two Demand (stons)": unit.class_two_demand,
+            "Class Three Demand (gal)": unit.class_three_demand,
+            "Class Four Demand (stons)": unit.class_four_demand,
+            "Class Five Demand (stons)": unit.class_five_demand,
+            "Class Six Demand (stons)": unit.class_six_demand,
+            "Class Nine Demand (stons)": unit.class_nine_demand
+        }, ignore_index=True)
 
-#DEMAND GENERATION
+#OUTPUTS
 """
-Break each into functions.
+Purpose: Organize data and output as CSV files.
 """
-#Competition
-def competition_demand_generator():
-    print("COMPETITION")
-    #Platoon
-    competition_class_one_demand_platoon = numpy.random.normal(ClassOneVariables.competition_demand_mean_platoon, ClassOneVariables.competition_demand_stdev)
-    print("Platoon, Class One:", round(competition_class_one_demand_platoon))
-    
-    #Company
-    competition_class_one_demand_company = numpy.random.normal(ClassOneVariables.competition_demand_mean_company, ClassOneVariables.competition_demand_stdev)
-    print("Company, Class One:", round(competition_class_one_demand_company))
-    
-    #MLR
-    competition_class_one_demand_mlr = numpy.random.normal(ClassOneVariables.competition_demand_mean_mlr, ClassOneVariables.competition_demand_stdev)
-    print("MLR, Class One:", round(competition_class_one_demand_mlr))
+class Outputs:
+    #Organization by class of supply.
+    def by_class():
+        class_one_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class One Demand (stons)",
+            "Water Demand (gal)"
+        ]].copy()
+        print("CLASS ONE")
+        print(class_one_data)
+        class_one_data.to_csv("outputs/class/class_one.csv")
 
-    #Class Two
+        class_two_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Two Demand (stons)"
+        ]].copy()
+        print("CLASS TWO")
+        print(class_two_data)
+        class_two_data.to_csv("outputs/class/class_two.csv")
 
-#Crisis
-def crisis_demand_generator():
-    print("CRISIS")
-    #Platoon
-    crisis_class_one_demand_platoon = numpy.random.normal(ClassOneVariables.crisis_demand_mean_platoon, ClassOneVariables.crisis_demand_stdev) - platoon_crisis_attrition
-    print("Platoon, Class One:", round(crisis_class_one_demand_platoon))
-    
-    #Company
-    crisis_class_one_demand_company = numpy.random.normal(ClassOneVariables.crisis_demand_mean_company, ClassOneVariables.crisis_demand_stdev) - company_crisis_attrition
-    print("Company, Class One:", round(crisis_class_one_demand_company))
-    
-    #MLR
-    crisis_class_one_demand_mlr = numpy.random.normal(ClassOneVariables.crisis_demand_mean_mlr, ClassOneVariables.crisis_demand_stdev) - mlr_crisis_attrition
-    print("MLR, Class One:", round(crisis_class_one_demand_mlr))
+        class_three_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Three Demand (gal)"
+        ]].copy()
+        print("CLASS THREE")
+        print(class_three_data)
+        class_three_data.to_csv("outputs/class/class_three.csv")
 
-#conflict
+        class_four_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Four Demand (stons)"
+        ]].copy()
+        print("CLASS FOUR")
+        print(class_four_data)
+        class_four_data.to_csv("outputs/class/class_four.csv")
 
-print(competition_demand_generator())
-print(crisis_demand_generator())
+        class_five_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Five Demand (stons)"
+        ]].copy()
+        print("CLASS FIVE")
+        print(class_five_data)
+        class_five_data.to_csv("outputs/class/class_five.csv")
+
+        class_six_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Six Demand (stons)"
+        ]].copy()
+        print("CLASS SIX")
+        print(class_six_data)
+        class_six_data.to_csv("outputs/class/class_six.csv")
+
+        class_nine_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Nine Demand (stons)"
+        ]].copy()
+        print("CLASS NINE")
+        print(class_nine_data)
+        class_nine_data.to_csv("outputs/class/class_nine.csv")
+
+    #Organize by unit type.
+    def by_unit():
+        unit_data = Data.all_data.copy()
+        
+        platoon_grouped = unit_data.groupby("Unit Type")
+        platoon_data = platoon_grouped.get_group("Platoon")
+        print("PLATOON")
+        print(platoon_data)
+        platoon_data.to_csv("outputs/unit/platoon.csv")
+
+        company_grouped = unit_data.groupby("Unit Type")
+        company_data = company_grouped.get_group("Company")
+        print("COMPANY")
+        print(company_data)
+        company_data.to_csv("outputs/unit/company.csv")
+
+        mlr_grouped = unit_data.groupby("Unit Type")
+        mlr_data = mlr_grouped.get_group("MLR")
+        print("MLR")
+        print(mlr_data)
+        mlr_data.to_csv("outputs/unit/MLR.csv")
+
+        mef_grouped = unit_data.groupby("Unit Type")
+        mef_data = mef_grouped.get_group("Platoon")
+        print("MEF")
+        print(mef_data)
+        mef_data.to_csv("outputs/unit/MEF.csv")
+
+    #Organize by state of conflict.
+    def by_state():
+        state_data = Data.all_data.copy()
+        
+        competition_grouped = state_data.groupby("Unit State")
+        competition_data = competition_grouped.get_group("Competition")
+        print("COMPETITION")
+        print(competition_data)
+        competition_data.to_csv("outputs/state/competition.csv")
+
+        crisis_grouped = state_data.groupby("Unit State")
+        crisis_data = crisis_grouped.get_group("Crisis")
+        print("CRISIS")
+        print(crisis_data)
+        crisis_data.to_csv("outputs/state/crisis.csv")
+
+        conflict_grouped = state_data.groupby("Unit State")
+        conflict_data = conflict_grouped.get_group("Conflict")
+        print("CONFLICT")
+        print(conflict_data)
+        conflict_data.to_csv("outputs/state/conflict.csv")
+
+#ITERATE THE DATA
+"""
+Purpose: Generate the demand
+"""
+def generator():
+#For every size unit, for every state of conflict, generate demand.
+    for size in unit_size:
+        for state in unit_state:
+            unit = UnitFactors(size, state)
+            UnitFactors.size(unit)
+            UnitFactors.state(unit)
+            UnitFactors.demand(unit)
+            Data.add_data(unit)
+
+#RUN
+"""
+Purpose: Run the program.
+"""
+generator()
+print("ALL DATA")
+print(Data.all_data)
+print("BY CLASS")
+print(Outputs.by_class())
+print("BY UNIT")
+print(Outputs.by_unit())
+print("BY STATE")
+print(Outputs.by_state())
