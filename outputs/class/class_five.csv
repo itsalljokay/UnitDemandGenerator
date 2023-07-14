@@ -1,0 +1,13 @@
+,Unit Type,Unit Size,Unit State,Inflation Factor,Attrition Size,Class Five Demand (stons)
+0,Platoon,50.0,Competition,1.0,0.0,13.36
+1,Platoon,50.0,Crisis,1.5,5.0,20.01
+2,Platoon,50.0,Conflict,2.0,18.0,19.14
+3,Company,400.0,Competition,1.0,0.0,122.54
+4,Company,400.0,Crisis,1.5,19.0,174.44
+5,Company,400.0,Conflict,2.0,128.0,165.2
+6,MLR,2000.0,Competition,1.0,0.0,603.67
+7,MLR,2000.0,Crisis,1.5,25.0,893.71
+8,MLR,2000.0,Conflict,2.0,292.0,1030.97
+9,MEF,5300.0,Competition,1.0,0.0,1600.78
+10,MEF,5300.0,Crisis,1.5,257.0,2284.77
+11,MEF,5300.0,Conflict,2.0,1638.0,2208.65

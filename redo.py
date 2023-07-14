@@ -18,7 +18,8 @@ import pandas
 current_location = os.getcwd()
 #All The Folders/Directories We Want To Put Outputs
 directories = [
-    "outputs"
+    "outputs",
+    "outputs/class"
 ]
 #If That Folder/Directory Doesn't Already Exist, Make It
 for directory in directories:
@@ -208,10 +209,91 @@ class Data:
         }, ignore_index=True)
 
 class Outputs:
-    class_one_data = Data.all_data
     def by_class():
-        class_one_dataframe = Outputs.class_one_data.groupby("Class One Demand (stons)")
-        class_one_dataframe.to_csv("outputs/class_one.csv")
+        class_one_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class One Demand (stons)",
+            "Water Demand (gal)"
+        ]].copy()
+        print("CLASS ONE")
+        print(class_one_data)
+        class_one_data.to_csv("outputs/class/class_one.csv")
+
+        class_two_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Two Demand (stons)"
+        ]].copy()
+        print("CLASS TWO")
+        print(class_two_data)
+        class_two_data.to_csv("outputs/class/class_two.csv")
+
+        class_three_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Three Demand (gal)"
+        ]].copy()
+        print("CLASS THREE")
+        print(class_three_data)
+        class_three_data.to_csv("outputs/class/class_three.csv")
+
+        class_four_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Four Demand (stons)"
+        ]].copy()
+        print("CLASS FOUR")
+        print(class_four_data)
+        class_four_data.to_csv("outputs/class/class_four.csv")
+
+        class_five_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Five Demand (stons)"
+        ]].copy()
+        print("CLASS FIVE")
+        print(class_five_data)
+        class_five_data.to_csv("outputs/class/class_five.csv")
+
+        class_six_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Six Demand (stons)"
+        ]].copy()
+        print("CLASS SIX")
+        print(class_six_data)
+        class_six_data.to_csv("outputs/class/class_six.csv")
+
+        class_nine_data = Data.all_data[[
+            "Unit Type",
+            "Unit Size",
+            "Unit State",
+            "Inflation Factor",
+            "Attrition Size",
+            "Class Nine Demand (stons)"
+        ]].copy()
+        print("CLASS NINE")
+        print(class_nine_data)
+        class_nine_data.to_csv("outputs/class/class_nine.csv")
 
 #ITERATE THE DATA
 def generator():
@@ -228,3 +310,5 @@ generator()
 Outputs.by_class()
 print("ALL DATA")
 print(Data.all_data)
+print("BY CLASS")
+print(Outputs.by_class())
