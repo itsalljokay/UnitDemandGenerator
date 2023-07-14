@@ -1,5 +1,5 @@
 ,Unit Type,Unit Size,Unit State,Inflation Factor,Attrition Size,Class One Demand (stons),Water Demand (gal),Class Two Demand (stons),Class Three Demand (gal),Class Four Demand (stons),Class Five Demand (stons),Class Six Demand (stons),Class Nine Demand (stons)
-1,Platoon,50.0,Crisis,1.5,4.0,2.07,1.66,1.41,12368.16,1.51,20.39,0.48,0.34
-4,Company,400.0,Crisis,1.5,11.0,22.11,21.55,9.69,104590.46,14.66,175.68,3.08,2.64
-7,MLR,2000.0,Crisis,1.5,148.0,100.42,102.24,43.4,497947.65,72.17,836.81,14.11,15.07
-10,MEF,5300.0,Crisis,1.5,77.0,290.42,289.42,122.8,1404311.26,206.07,2365.27,37.7,38.24
+1,Platoon,50.0,Crisis,1.5,4.0,2.2,2.72,0.92,12367.74,2.37,20.59,0.61,0.55
+4,Company,400.0,Crisis,1.5,26.0,20.89,22.28,8.02,100558.12,16.11,169.58,2.95,2.39
+7,MLR,2000.0,Crisis,1.5,189.0,98.73,101.59,42.86,486927.11,71.03,819.14,13.19,12.78
+10,MEF,5300.0,Crisis,1.5,354.0,274.22,273.62,116.9,1329833.29,195.75,2241.46,36.48,36.71

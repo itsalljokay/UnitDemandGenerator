@@ -1,4 +1,4 @@
 ,Unit Type,Unit Size,Unit State,Inflation Factor,Attrition Size,Class One Demand (stons),Water Demand (gal),Class Two Demand (stons),Class Three Demand (gal),Class Four Demand (stons),Class Five Demand (stons),Class Six Demand (stons),Class Nine Demand (stons)
-6,MLR,2000.0,Competition,1.0,0.0,72.66,75.25,32.52,358495.41,52.21,605.03,9.13,11.33
-7,MLR,2000.0,Crisis,1.5,148.0,100.42,102.24,43.4,497947.65,72.17,836.81,14.11,15.07
-8,MLR,2000.0,Conflict,2.0,261.0,128.87,129.53,54.12,623422.24,91.61,1051.2,15.73,16.39
+6,MLR,2000.0,Competition,1.0,0.0,73.74,72.59,32.1,358493.93,53.36,604.92,9.75,8.62
+7,MLR,2000.0,Crisis,1.5,189.0,98.73,101.59,42.86,486927.11,71.03,819.14,13.19,12.78
+8,MLR,2000.0,Conflict,2.0,300.0,127.68,126.35,53.33,609441.0,89.67,1026.66,17.8,15.38

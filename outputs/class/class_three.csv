@@ -1,13 +1,13 @@
 ,Unit Type,Unit Size,Unit State,Inflation Factor,Attrition Size,Class Three Demand (gal)
-0,Platoon,50.0,Competition,1.0,0.0,8961.67
-1,Platoon,50.0,Crisis,1.5,4.0,12368.16
-2,Platoon,50.0,Conflict,2.0,17.0,11830.96
-3,Company,400.0,Competition,1.0,0.0,71699.45
-4,Company,400.0,Crisis,1.5,11.0,104590.46
-5,Company,400.0,Conflict,2.0,51.0,125114.77
-6,MLR,2000.0,Competition,1.0,0.0,358495.41
-7,MLR,2000.0,Crisis,1.5,148.0,497947.65
-8,MLR,2000.0,Conflict,2.0,261.0,623422.24
-9,MEF,5300.0,Competition,1.0,0.0,950012.1
-10,MEF,5300.0,Crisis,1.5,77.0,1404311.26
-11,MEF,5300.0,Conflict,2.0,2107.0,1144671.43
+0,Platoon,50.0,Competition,1.0,0.0,8962.94
+1,Platoon,50.0,Crisis,1.5,4.0,12367.74
+2,Platoon,50.0,Conflict,2.0,6.0,15774.31
+3,Company,400.0,Competition,1.0,0.0,71699.13
+4,Company,400.0,Crisis,1.5,26.0,100558.12
+5,Company,400.0,Conflict,2.0,122.0,99660.65
+6,MLR,2000.0,Competition,1.0,0.0,358493.93
+7,MLR,2000.0,Crisis,1.5,189.0,486927.11
+8,MLR,2000.0,Conflict,2.0,300.0,609441.0
+9,MEF,5300.0,Competition,1.0,0.0,950010.24
+10,MEF,5300.0,Crisis,1.5,354.0,1329833.29
+11,MEF,5300.0,Conflict,2.0,1917.0,1212786.77

@@ -258,6 +258,12 @@ class Data:
 Purpose: Organize data and output as CSV files.
 """
 class Outputs:
+    #Output complete data.
+    def complete_data():
+        complete_data = Data.all_data.copy()
+        print(complete_data)
+        complete_data.to_csv("outputs/all_data.csv")
+
     #Organization by class of supply.
     def by_class():
         class_one_data = Data.all_data[[
@@ -415,7 +421,7 @@ Purpose: Run the program.
 """
 generator()
 print("ALL DATA")
-print(Data.all_data)
+print(Outputs.complete_data())
 print("BY CLASS")
 print(Outputs.by_class())
 print("BY UNIT")
