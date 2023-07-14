@@ -1,13 +1,13 @@
 ,Unit Type,Unit Size,Unit State,Inflation Factor,Attrition Size,Class Two Demand (stons)
-0,Platoon,50.0,Competition,1.0,0.0,1.14
-1,Platoon,50.0,Crisis,1.5,5.0,0.94
-2,Platoon,50.0,Conflict,2.0,18.0,1.49
-3,Company,400.0,Competition,1.0,0.0,4.73
-4,Company,400.0,Crisis,1.5,19.0,9.56
-5,Company,400.0,Conflict,2.0,128.0,8.66
-6,MLR,2000.0,Competition,1.0,0.0,31.21
-7,MLR,2000.0,Crisis,1.5,25.0,46.29
-8,MLR,2000.0,Conflict,2.0,292.0,54.65
-9,MEF,5300.0,Competition,1.0,0.0,83.87
-10,MEF,5300.0,Crisis,1.5,257.0,116.23
-11,MEF,5300.0,Conflict,2.0,1638.0,115.18
+0,Platoon,50.0,Competition,1.0,0.0,1.64
+1,Platoon,50.0,Crisis,1.5,2.0,0.22
+2,Platoon,50.0,Conflict,2.0,9.0,2.63
+3,Company,400.0,Competition,1.0,0.0,6.19
+4,Company,400.0,Crisis,1.5,30.0,7.85
+5,Company,400.0,Conflict,2.0,62.0,10.05
+6,MLR,2000.0,Competition,1.0,0.0,31.64
+7,MLR,2000.0,Crisis,1.5,101.0,44.9
+8,MLR,2000.0,Conflict,2.0,238.0,55.84
+9,MEF,5300.0,Competition,1.0,0.0,83.49
+10,MEF,5300.0,Crisis,1.5,399.0,116.51
+11,MEF,5300.0,Conflict,2.0,1474.0,120.2

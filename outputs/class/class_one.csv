@@ -1,13 +1,13 @@
 ,Unit Type,Unit Size,Unit State,Inflation Factor,Attrition Size,Class One Demand (stons),Water Demand (gal)
-0,Platoon,50.0,Competition,1.0,0.0,0.51,0.58
-1,Platoon,50.0,Crisis,1.5,5.0,3.29,0.63
-2,Platoon,50.0,Conflict,2.0,18.0,2.76,3.27
-3,Company,400.0,Competition,1.0,0.0,12.22,14.7
-4,Company,400.0,Crisis,1.5,19.0,21.34,22.27
-5,Company,400.0,Conflict,2.0,128.0,20.98,20.55
-6,MLR,2000.0,Competition,1.0,0.0,73.46,73.43
-7,MLR,2000.0,Crisis,1.5,25.0,109.32,110.11
-8,MLR,2000.0,Conflict,2.0,292.0,126.61,125.5
-9,MEF,5300.0,Competition,1.0,0.0,196.28,197.18
-10,MEF,5300.0,Crisis,1.5,257.0,279.02,279.46
-11,MEF,5300.0,Conflict,2.0,1638.0,271.2,271.22
+0,Platoon,50.0,Competition,1.0,0.0,1.08,2.38
+1,Platoon,50.0,Crisis,1.5,2.0,2.15,1.49
+2,Platoon,50.0,Conflict,2.0,9.0,2.89,3.06
+3,Company,400.0,Competition,1.0,0.0,14.25,15.62
+4,Company,400.0,Crisis,1.5,30.0,19.66,22.46
+5,Company,400.0,Conflict,2.0,62.0,24.39,26.34
+6,MLR,2000.0,Competition,1.0,0.0,73.4,73.54
+7,MLR,2000.0,Crisis,1.5,101.0,105.47,105.07
+8,MLR,2000.0,Conflict,2.0,238.0,129.98,132.17
+9,MEF,5300.0,Competition,1.0,0.0,195.9,196.28
+10,MEF,5300.0,Crisis,1.5,399.0,273.6,272.46
+11,MEF,5300.0,Conflict,2.0,1474.0,284.9,281.9

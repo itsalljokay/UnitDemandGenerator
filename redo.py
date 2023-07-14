@@ -19,7 +19,9 @@ current_location = os.getcwd()
 #All The Folders/Directories We Want To Put Outputs
 directories = [
     "outputs",
-    "outputs/class"
+    "outputs/class",
+    "outputs/unit",
+    "outputs/state"
 ]
 #If That Folder/Directory Doesn't Already Exist, Make It
 for directory in directories:
@@ -295,6 +297,38 @@ class Outputs:
         print(class_nine_data)
         class_nine_data.to_csv("outputs/class/class_nine.csv")
 
+    def by_unit():
+        unit_data = Data.all_data.copy()
+        
+        platoon_grouped = unit_data.groupby("Unit Type")
+        platoon_data = platoon_grouped.get_group("Platoon")
+        print("PLATOON")
+        print(platoon_data)
+        platoon_data.to_csv("outputs/unit/platoon.csv")
+
+        company_grouped = unit_data.groupby("Unit Type")
+        company_data = company_grouped.get_group("Company")
+        print("COMPANY")
+        print(company_data)
+        company_data.to_csv("outputs/unit/company.csv")
+
+        mlr_grouped = unit_data.groupby("Unit Type")
+        mlr_data = mlr_grouped.get_group("MLR")
+        print("MLR")
+        print(mlr_data)
+        mlr_data.to_csv("outputs/unit/MLR.csv")
+
+        mef_grouped = unit_data.groupby("Unit Type")
+        mef_data = mef_grouped.get_group("Platoon")
+        print("MEF")
+        print(mef_data)
+        mef_data.to_csv("outputs/unit/MEF.csv")
+
+
+
+
+
+
 #ITERATE THE DATA
 def generator():
     for size in unit_size:
@@ -312,3 +346,5 @@ print("ALL DATA")
 print(Data.all_data)
 print("BY CLASS")
 print(Outputs.by_class())
+print("BY UNIT")
+print(Outputs.by_unit())
