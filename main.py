@@ -2,8 +2,8 @@
 UNIT DEMAND GENERATOR FOR COMPETITION, CRISIS, AND CONFLICT CONTIUUM 
 By: 2ndLt Jessi Lanum
 
-PROBLEM: Realistic demand generation is neccessary for increasing realism for logistics-based wargames. 
-PURPOSE: Provide realistic demand generation for each class of supply depending on unit size and state.
+PROBLEM: Realistic demand generation is necessary for increasing realism for logistics-based wargames. 
+PURPOSE: Provide realistic demand generation for each class of supply depending on unit size and conflict state.
 OBJECTIVE: Provide quantitative demand data output for logistics-based wargames.
 
 LAST UPDATED: 14 JUL 23
@@ -66,13 +66,13 @@ unit_size = ["Platoon", "Company", "MLR", "MEF"]
 unit_state = ["Competition", "Crisis", "Conflict"]
 mef_size = 5300
  
-#DEFINE DATA
+#DATA DEFINITION
 """
 Purpose: Create a unit complete with characteristics that would impact demand request, and their corresponding demand per
 each class of supply.
 """
 class UnitFactors:
-    #Every unit has a type (platoon, company, MLR, etc), state (competition, crisis, etc), and inflation factor, and an attrition size.
+    #Every unit has a type (platoon, company, MLR, etc), state (competition, crisis, etc), an inflation factor, and an attrition size.
     def __init__(self, type, state):
         self.type = type
         self.state = state
@@ -401,7 +401,7 @@ class Outputs:
         print(conflict_data)
         conflict_data.to_csv("outputs/state/conflict.csv")
 
-#ITERATE THE DATA
+#DATA GENERATION
 """
 Purpose: Generate the demand
 """
