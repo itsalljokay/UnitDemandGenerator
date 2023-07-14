@@ -14,6 +14,10 @@ public release with unlimited distribution. Specifically, section 4030 Logistics
 Force Supply Requirements was referenced.
 
 o All demand calculated is daily.
+
+o Demand is randomly sampled from a normal distribution. The absolute value of this sample is the final demand output.
+  This approach was utilized as negative demand is not possible in this scenario, and a lognormal distribution was not
+  appropriate for the data.
 """
 
 #IMPORTS
