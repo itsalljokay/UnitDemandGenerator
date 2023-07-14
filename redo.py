@@ -324,6 +324,27 @@ class Outputs:
         print(mef_data)
         mef_data.to_csv("outputs/unit/MEF.csv")
 
+    def by_state():
+        state_data = Data.all_data.copy()
+        
+        competition_grouped = state_data.groupby("Unit State")
+        competition_data = competition_grouped.get_group("Competition")
+        print("COMPETITION")
+        print(competition_data)
+        competition_data.to_csv("outputs/state/competition.csv")
+
+        crisis_grouped = state_data.groupby("Unit State")
+        crisis_data = crisis_grouped.get_group("Crisis")
+        print("CRISIS")
+        print(crisis_data)
+        crisis_data.to_csv("outputs/state/crisis.csv")
+
+        conflict_grouped = state_data.groupby("Unit State")
+        conflict_data = conflict_grouped.get_group("Conflict")
+        print("CONFLICT")
+        print(conflict_data)
+        conflict_data.to_csv("outputs/state/conflict.csv")
+
 
 
 
@@ -348,3 +369,5 @@ print("BY CLASS")
 print(Outputs.by_class())
 print("BY UNIT")
 print(Outputs.by_unit())
+print("BY STATE")
+print(Outputs.by_state())
